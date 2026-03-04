@@ -173,11 +173,18 @@ mut_dev = dev
 # Genetic Algorthm Functions
 
 
-# Evaluation of of a single function
-def evaluate(func,a):
-	x=a
-	res1 = eval(func)
-	return res1
+# Evaluation of of a single function          (i change this part)
+def evaluate(func, a):
+    x = a
+    allowed = {
+        "x": x,
+        "np": np,
+        "sin": np.sin,
+        "cos": np.cos,
+        "exp": np.exp,
+        "sqrt": np.sqrt
+    }
+    return eval(func, {"__builtins__": None}, allowed)
 
 
 
@@ -236,29 +243,30 @@ def selection(popp):
 	return res_ff
 
 
-
+# better crossover
 def crossover(parents):
-	b1=[None]*pop
-	b2=[None]*pop
-	kids_ND = [None]*pop
-	for m in range(pop):
-		b1[m] = np.array( parents[m][0] ) - alpha*( np.array( parents[m][1] )-np.array( parents[m][0] ) )
-		b2[m] = np.array( parents[m][1] ) + alpha*( np.array( parents[m][1] )-np.array( parents[m][0] ) )
-	for u in range(pop):
-		kids_ND[u] = np.random.uniform(b1[u],b2[u])
-	res4 = kids_ND
-	return res4
+    kids = []
+
+    for p1, p2 in parents:
+        p1 = np.array(p1)
+        p2 = np.array(p2)
+
+        d = np.abs(p1 - p2)
+        lower = np.minimum(p1, p2) - alpha * d
+        upper = np.maximum(p1, p2) + alpha * d
+
+        child = np.random.uniform(lower, upper)
+        kids.append(child)
+
+    return kids
 
 
-
+#этот вариант получше:)
 def mutation(kids):
-	for t in range(pop):
-		rand_num = random.random()
-		if (rand_num > mut):
-			GAUSS = random.gauss(0,mut_dev)
-			kids[t] = np.array(kids[t]) + GAUSS
-		res5 = kids
-	return res5
+    for t in range(len(kids)):
+        if random.random() < mut:
+            kids[t] += np.random.normal(0, mut_dev, size=len(kids[t]))
+    return kids
 
 
 
@@ -412,7 +420,6 @@ www.pack(padx=5)
 
 
 root.mainloop()
-
 
 
 
