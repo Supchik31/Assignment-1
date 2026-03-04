@@ -243,7 +243,9 @@ def selection(popp):
 	return res_ff
 
 
-# better crossover
+# i change crossover 
+
+
 def crossover(parents):
     kids = []
 
