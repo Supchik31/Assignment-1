@@ -2,6 +2,9 @@
 
 ## 📌 Description
 This project implements a Genetic Algorithm (GA) to optimize continuous mathematical functions.
+
+
+```python
 from tkinter import *
 import matplotlib.pyplot as plt
 
@@ -409,6 +412,8 @@ www.pack(padx=5)
 
 
 root.mainloop()
+
+
 
 
 
